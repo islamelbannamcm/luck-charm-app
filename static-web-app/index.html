@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your $1 Luck Charm</title>
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body { font-family: Arial; max-width: 400px; margin: 50px auto; text-align: center; }
+    input, select { width: 100%; padding: 10px; margin: 10px 0; }
+    button { background: #007bff; color: white; padding: 15px; border: none; width: 100%; font-size: 18px; }
+    #preview { margin-top: 20px; padding: 20px; background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h1>Unlock Your Luck Charm – Just $1!</h1>
+  <p>Enter details for your custom AI good-vibe talisman.</p>
+  <form id="charmForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="date" id="birthdate" required>
+    <select id="goal">
+      <option value="job">Job Interview</option>
+      <option value="date">Date Night</option>
+      <option value="exam">Exam Luck</option>
+      <option value="other">Something Else</option>
+    </select>
+    <div id="stripe-container"></div> <!-- Stripe mounts here -->
+    <button type="submit">Pay $1 & Generate (Apple Pay Ready)</button>
+  </form>
+  <div id="preview"></div>
+  <script src="script.js"></script>
+</body>
+</html>
