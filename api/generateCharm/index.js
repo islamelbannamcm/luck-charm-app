@@ -1,17 +1,30 @@
 const { BlobServiceClient } = require("@azure/storage-blob");
-const { OpenAI } = require("openai"); // Changed to openai npm
+const { TableClient } = require("@azure/data-tables");
+const { OpenAI } = require("openai");
 const sharp = require("sharp");
 
 module.exports = async function (context, req) {
   const { sessionId } = req.body;
-  // TODO: Fetch metadata (name, birthdate, goal) from Azure Table or webhook metadata
-  const { name, birthdate, goal } = { name: "Test", birthdate: "1990-01-01", goal: "job" }; // Placeholder
+
+  // Fetch metadata from Table Storage
+  const tableClient = TableClient.fromConnectionString(
+    process.env.AZURE_STORAGE_CONNECTION_STRING,
+    "CharmMetadata"
+  );
+  let metadata;
+  try {
+    metadata = await tableClient.getEntity("charms", sessionId);
+  } catch (err) {
+    context.res = { status: 404, body: "Session not found" };
+    return;
+  }
+  const { name, birthdate, goal } = metadata;
 
   // Initialize Azure OpenAI
   const openai = new OpenAI({
     apiKey: process.env.AZURE_OPENAI_KEY,
     endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-    deployment: "gpt35" // Your deployment name
+    deployment: "gpt35"
   });
 
   // Generate charm
@@ -21,7 +34,7 @@ module.exports = async function (context, req) {
   });
   const charmText = response.choices[0].message.content;
 
-  // Create simple image
+  // Create image
   const imageBuffer = await sharp({
     create: { width: 400, height: 300, channels: 4, background: { r: 0, g: 100, b: 200, alpha: 1 } }
   })
@@ -37,7 +50,7 @@ module.exports = async function (context, req) {
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
   await blockBlobClient.upload(imageBuffer, imageBuffer.length);
 
-  // SAS URL (1-hour expiry)
+  // SAS URL
   const sasUrl = await blockBlobClient.generateSasUrl({
     startsOn: new Date(),
     expiresOn: new Date(Date.now() + 3600 * 1000),
