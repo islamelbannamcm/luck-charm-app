@@ -12,7 +12,6 @@
   "dependencies": {
     "@azure/data-tables": "^13.2.1",
     "@azure/functions": "^3.5.1",
-    "@azure/openai": "^1.0.0",
     "@azure/storage-blob": "^12.14.0",
     "node-fetch": "^2.6.9",
     "openai": "^4.20.1",
