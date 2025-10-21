@@ -23,45 +23,6 @@
       --card-bg: rgba(255, 255, 255, 0.8);
       --success: #4CAF50;
     }
-    /* Icon animations */
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.1); opacity: 0.9; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    
-    .spin-slow {
-      animation: spin 10s linear infinite;
-    }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    .twinkle {
-      animation: twinkle 3s infinite ease-in-out;
-    }
-    
-    @keyframes twinkle {
-      0% { opacity: 1; text-shadow: 0 0 0 rgba(156, 39, 176, 0); }
-      50% { opacity: 1; text-shadow: 0 0 10px rgba(156, 39, 176, 0.7); }
-      100% { opacity: 1; text-shadow: 0 0 0 rgba(156, 39, 176, 0); }
-    }
-    
-    .float-icon {
-      animation: float-icon 3s infinite ease-in-out;
-    }
-    
-    @keyframes float-icon {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-      100% { transform: translateY(0); }
-    }
     
     * {
       box-sizing: border-box;
@@ -74,45 +35,53 @@
       background: var(--background);
       color: var(--text);
       line-height: 1.6;
-      background-image: url('https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/simpleicons.svg');
+      background-image: url('https://cdnjs.cloudflare.com/ajax/libs/simple-icons/3.0.1/simpleicons.svg'); /* Placeholder for background pattern */
       background-size: 400px;
       background-position: center;
       background-attachment: fixed;
       background-opacity: 0.1;
       min-height: 100vh;
-      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 60px;
+    }
+    
+    .page-container {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .logo-header {
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    
-    header {
-      text-align: center;
-      padding: 20px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: var(--white);
-      border-radius: 0 0 20px 20px;
-      box-shadow: 0 5px 15px rgba(156, 39, 176, 0.3);
+      padding: 15px 0;
       margin-bottom: 20px;
     }
     
-    header img {
-      max-width: 150px;
-      height: auto;
-      margin-bottom: 10px;
-      animation: float-icon 3s infinite ease-in-out;
+    .logo {
+      width: 60px;
+      height: 60px;
+      margin-right: 15px;
+      animation: float 5s infinite ease-in-out;
     }
     
-    header h1 {
+    .logo-text {
       font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      margin: 0;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .container {
       width: 100%;
       max-width: 480px;
-      margin: 30px auto;
+      margin: 10px auto 30px;
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       border-radius: 20px;
@@ -217,6 +186,69 @@
       0% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-10px) rotate(5deg); }
       100% { transform: translateY(0) rotate(0deg); }
+    }
+    
+    /* Attention-grabbing elements */
+    .limited-offer {
+      background: linear-gradient(135deg, #ff9966, #ff5e62);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      margin: 30px auto 10px;
+      max-width: 300px;
+      box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .limited-offer::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(transparent, rgba(255, 255, 255, 0.3), transparent);
+      transform: rotate(30deg);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+      0% { transform: rotate(30deg) translate(-100%, -100%); }
+      20%, 100% { transform: rotate(30deg) translate(100%, 100%); }
+    }
+    
+    .countdown {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .countdown-item {
+      background: var(--primary-dark);
+      color: white;
+      width: 40px;
+      height: 40px;
+      margin: 0 5px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(156, 39, 176, 0.3);
+    }
+    
+    .countdown-separator {
+      display: flex;
+      align-items: center;
+      color: var(--primary-dark);
+      font-weight: 600;
+      font-size: 1.2rem;
     }
     
     .form-group {
@@ -477,41 +509,209 @@
       margin-right: 3px;
     }
     
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--primary-dark);
-      color: var(--white);
-      font-size: 0.9em;
-      margin-top: 20px;
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -5px 15px rgba(156, 39, 176, 0.3);
+    .apple-pay-container {
+      margin: 20px 0;
+      min-height: 40px;
     }
     
-    footer img {
-      max-width: 100px;
-      height: auto;
-      margin-bottom: 10px;
+    /* Icon animations */
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.9; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .spin-slow {
+      animation: spin 10s linear infinite;
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .twinkle {
+      animation: twinkle 3s infinite ease-in-out;
+    }
+    
+    @keyframes twinkle {
+      0% { opacity: 1; text-shadow: 0 0 0 rgba(156, 39, 176, 0); }
+      50% { opacity: 1; text-shadow: 0 0 10px rgba(156, 39, 176, 0.7); }
+      100% { opacity: 1; text-shadow: 0 0 0 rgba(156, 39, 176, 0); }
+    }
+    
+    .float-icon {
       animation: float-icon 3s infinite ease-in-out;
     }
     
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-      margin: 0 10px;
+    @keyframes float-icon {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0); }
     }
     
-    footer a:hover {
+    .testimonials {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(156, 39, 176, 0.1);
+    }
+    
+    .testimonials-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--primary-dark);
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    
+    .testimonials-slider {
+      position: relative;
+      overflow: hidden;
+      height: 120px;
+    }
+    
+    .testimonial-item {
+      position: absolute;
+      width: 100%;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 12px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    
+    .testimonial-item.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .testimonial-quote {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    
+    .testimonial-author {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .success-indicators {
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 0 15px;
+      text-align: center;
+    }
+    
+    .success-item {
+      flex: 1;
+    }
+    
+    .success-number {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+      font-family: 'Playfair Display', serif;
+    }
+    
+    .success-label {
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+    
+    .aura-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 30%, rgba(156, 39, 176, 0.1), transparent 70%);
+      z-index: -1;
+      opacity: 0.6;
+      animation: pulse-bg 10s infinite alternate;
+    }
+    
+    @keyframes pulse-bg {
+      0% { opacity: 0.4; transform: scale(1); }
+      100% { opacity: 0.8; transform: scale(1.2); }
+    }
+    
+    /* Mystical symbols */
+    .mystical-symbols {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+    
+    .symbol {
+      position: absolute;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+    
+    .symbol-1 { top: 10%; left: 10%; animation: float-delay 10s infinite alternate ease-in-out; }
+    .symbol-2 { top: 20%; right: 15%; animation: float-delay 12s infinite alternate-reverse ease-in-out; }
+    .symbol-3 { bottom: 15%; left: 20%; animation: float-delay 9s infinite alternate ease-in-out; }
+    .symbol-4 { bottom: 25%; right: 10%; animation: float-delay 11s infinite alternate-reverse ease-in-out; }
+    
+    @keyframes float-delay {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 0.8rem;
+      z-index: 100;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 8px;
+      transition: color 0.3s ease;
+    }
+    
+    .footer a:hover {
+      color: white;
       text-decoration: underline;
     }
     
     @media (max-width: 480px) {
       .container {
         padding: 30px 20px;
+        margin: 0 10px;
       }
       
-      header h1, h1 {
+      h1 {
         font-size: 1.8rem;
+      }
+      
+      .logo-text {
+        font-size: 1.5rem;
       }
       
       .benefit-item {
@@ -522,102 +722,158 @@
         padding: 12px;
       }
       
-      header img, footer img {
-        max-width: 120px;
+      .logo {
+        width: 50px;
+        height: 50px;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="/images/logo.png" alt="Luck Charm Logo">
-    <h1>Your $1 Luck Charm</h1>
-  </header>
-  <div class="container">
-    <div class="price-tag"><small>ONLY</small>$1</div>
-    
-    <i class="fas fa-magic charm-icon"></i>
-    <h1>Your Luck Charm</h1>
-    <p class="tagline">Personalized Good Fortune, Just For You</p>
-    
-    <p class="description">An AI-generated talisman uniquely crafted to your birth energy and desires. Activate your custom luck charm with just $1.</p>
-    
-    <div class="benefits">
-      <div class="benefit-item">
-        <i class="fas fa-bolt benefit-icon pulse"></i>
-        <p class="benefit-text">Instantly Generated</p>
-      </div>
-      <div class="benefit-item">
-        <i class="fas fa-fingerprint benefit-icon spin-slow"></i>
-        <p class="benefit-text">Uniquely Yours</p>
-      </div>
-      <div class="benefit-item">
-        <i class="fas fa-sparkles benefit-icon twinkle"></i>
-        <p class="benefit-text">Positive Energy</p>
-      </div>
-      <div class="benefit-item">
-        <i class="fas fa-crown benefit-icon float-icon"></i>
-        <p class="benefit-text">Amplifies Intentions</p>
-      </div>
+  <div class="page-container">
+    <div class="logo-header">
+      <img src="/images/logo.png" alt="Luck Charm Logo" class="logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22 viewBox=%220 0 24 24%22><path fill=%22%239c27b0%22 d=%22M7 3.5c-.8.8-2.2.8-2.8 0c-.6-.7 0-1.7.8-2.1c.8-.4 2-.1 2.4.7c.4.7.1 1-.4 1.4zM9.9 4.4c1.7 1.7 3.6 5 3.2 11.2c2.3-6 1.1-9.7-1-12.1c-2-2.2-5-3-8-2.3l-.2.1c3.2.9 4.7 1.8 6 3.1zm-4.9 8c-.7 1-1 2.2-1 3.5c0 3.2 2.5 5.5 5.8 5.1c2.3-.4 4.2-2.4 4.2-4.7c0-1.3-.5-2.1-1.3-2.7c-.8-.5-1.7-.5-2.5-.3c-1.6.5-2.2 1.5-2.2 2.5c0 .5.2 1 .4 1.5c.4.9-.1 1.7-1 1.7c-1.1 0-2.4-1.2-2.4-3.2c0-1.9 1.1-3.4 3-4.2c.4-.2.8-.2 1.3-.2h3.4c.8 0 1.4-.9.9-1.6c-1.2-1.4-3.5-1.8-5.8-1.1c-1.6.5-2.8 1.4-3.8 2.7z%22/></svg>'">
+      <h1 class="logo-text">Your $1 Luck Charm</h1>
     </div>
     
-    <form id="charmForm">
-      <div class="form-group">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
-        <i class="fas fa-user form-icon"></i>
+    <div class="container">
+      <div class="price-tag"><small>ONLY</small>$1</div>
+      <div class="aura-bg"></div>
+      <div class="mystical-symbols">
+        <i class="fas fa-moon symbol symbol-1"></i>
+        <i class="fas fa-star symbol symbol-2"></i>
+        <i class="fas fa-infinity symbol symbol-3"></i>
+        <i class="fas fa-sun symbol symbol-4"></i>
       </div>
       
-      <div class="form-group">
-        <label for="birthdate">Your Birthdate</label>
-        <input type="date" id="birthdate" class="form-control" required>
-        <i class="fas fa-calendar-alt form-icon"></i>
+      <i class="fas fa-magic charm-icon"></i>
+      <h1>Your Luck Charm</h1>
+      <p class="tagline">Personalized Good Fortune, Just For You</p>
+      
+      <p class="description">An AI-generated talisman uniquely crafted to your birth energy and desires. Activate your custom luck charm with just $1.</p>
+      
+      <div class="limited-offer">
+        🔮 Special Launch Offer - Next 100 Charms Only 🔮
       </div>
       
-      <div class="form-group">
-        <label for="goal">What Do You Need Luck With?</label>
-        <select id="goal" class="form-control" required>
-          <option value="" disabled selected>Select your desire</option>
-          <option value="job">Ace That Job Interview</option>
-          <option value="date">Enchanting Date Night</option>
-          <option value="exam">Success in Exams</option>
-          <option value="money">Financial Prosperity</option>
-          <option value="health">Vibrant Wellbeing</option>
-          <option value="other">Something Else</option>
-        </select>
-        <i class="fas fa-star form-icon"></i>
+      <div class="countdown">
+        <div class="countdown-item">1</div>
+        <div class="countdown-item">9</div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-item">5</div>
+        <div class="countdown-item">2</div>
       </div>
       
-      <div id="stripe-container" class="apple-pay-container"></div>
-      
-      <button type="submit" class="btn">
-        <i class="fab fa-apple-pay"></i> Pay $1 with Apple Pay
-      </button>
-      
-      <div class="payment-icons">
-        Quick & Secure Payment with
-        <i class="fab fa-apple-pay"></i>
+      <div class="success-indicators">
+        <div class="success-item">
+          <div class="success-number">98%</div>
+          <div class="success-label">Satisfaction</div>
+        </div>
+        <div class="success-item">
+          <div class="success-number">5,431</div>
+          <div class="success-label">Happy Users</div>
+        </div>
+        <div class="success-item">
+          <div class="success-number">24h</div>
+          <div class="success-label">Active Time</div>
+        </div>
       </div>
       
-      <div class="guarantee">
-        <i class="fas fa-shield-alt"></i>
-        <p class="guarantee-text">Instant digital delivery. Simple Apple Pay checkout.</p>
+      <div class="benefits">
+        <div class="benefit-item">
+          <i class="fas fa-bolt benefit-icon pulse"></i>
+          <p class="benefit-text">Instantly Generated</p>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-fingerprint benefit-icon spin-slow"></i>
+          <p class="benefit-text">Uniquely Yours</p>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-sparkles benefit-icon twinkle"></i>
+          <p class="benefit-text">Positive Energy</p>
+        </div>
+        <div class="benefit-item">
+          <i class="fas fa-crown benefit-icon float-icon"></i>
+          <p class="benefit-text">Amplifies Intentions</p>
+        </div>
       </div>
-    </form>
-    
-    <div id="preview" class="preview-container">
-      <h2 class="preview-title">Your Personalized Charm</h2>
-      <div class="charm-preview">
-        <i class="fas fa-sun"></i>
+      
+      <form id="charmForm">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+          <i class="fas fa-user form-icon"></i>
+        </div>
+        
+        <div class="form-group">
+          <label for="birthdate">Your Birthdate</label>
+          <input type="date" id="birthdate" class="form-control" required>
+          <i class="fas fa-calendar-alt form-icon"></i>
+        </div>
+        
+        <div class="form-group">
+          <label for="goal">What Do You Need Luck With?</label>
+          <select id="goal" class="form-control" required>
+            <option value="" disabled selected>Select your desire</option>
+            <option value="job">Ace That Job Interview</option>
+            <option value="date">Enchanting Date Night</option>
+            <option value="exam">Success in Exams</option>
+            <option value="money">Financial Prosperity</option>
+            <option value="health">Vibrant Wellbeing</option>
+            <option value="other">Something Else</option>
+          </select>
+          <i class="fas fa-star form-icon"></i>
+        </div>
+        
+        <div id="stripe-container" class="apple-pay-container"></div> <!-- Stripe Apple Pay mounts here -->
+        
+        <button type="submit" class="btn">
+          <i class="fab fa-apple-pay"></i> Pay $1 with Apple Pay
+        </button>
+        
+        <div class="payment-icons">
+          Quick & Secure Payment with
+          <i class="fab fa-apple-pay"></i>
+        </div>
+        
+        <div class="guarantee">
+          <i class="fas fa-shield-alt"></i>
+          <p class="guarantee-text">Instant digital delivery. Simple Apple Pay checkout.</p>
+        </div>
+      </form>
+      
+      <div class="testimonials">
+        <h3 class="testimonials-title">What People Are Saying</h3>
+        <div class="testimonials-slider" id="testimonials-slider">
+          <div class="testimonial-item active">
+            <p class="testimonial-quote">"I got my luck charm before a big interview. You won't believe it, but I got the job that same day!"</p>
+            <p class="testimonial-author">- Sarah T.</p>
+          </div>
+          <div class="testimonial-item">
+            <p class="testimonial-quote">"I was skeptical, but my exam scores improved right after getting my charm. Coincidence? Maybe, but I'm keeping it!"</p>
+            <p class="testimonial-author">- James K.</p>
+          </div>
+          <div class="testimonial-item">
+            <p class="testimonial-quote">"The energy shift was immediate. Within a week, I met someone special on a date that almost got cancelled!"</p>
+            <p class="testimonial-author">- Mia L.</p>
+          </div>
+        </div>
       </div>
-      <p>Your custom luck charm has been created! Check your email for the full details.</p>
+      
+      <div id="preview" class="preview-container">
+        <h2 class="preview-title">Your Personalized Charm</h2>
+        <div class="charm-preview">
+          <i class="fas fa-sun"></i>
+        </div>
+        <p>Your custom luck charm has been created! Check your email for the full details.</p>
+      </div>
     </div>
   </div>
-  <footer>
-    <img src="/images/logo.png" alt="Luck Charm Logo">
-    <p>Powered by Stripe & Azure. &copy; 2025 Luck Charm App.</p>
-    <p><a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
-  </footer>
+  
+  <div class="footer">
+    <p>Powered by Stripe & Azure. &copy; 2025 Luck Charm App. 
+    <a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+  </div>
   
   <script>
     // Preview functionality
@@ -655,7 +911,7 @@
     //   currency: 'usd',
     //   total: {
     //     label: 'Personalized Luck Charm',
-    //     amount: 100,
+    //     amount: 100, // Amount in cents
     //   },
     //   requestPayerName: true,
     //   requestPayerEmail: true,
@@ -676,6 +932,46 @@
     //       '<p style="color: var(--text-light); font-size: 0.8rem; text-align: center; margin: 10px 0;">Apple Pay not available on this device. Please try on a compatible device.</p>';
     //   }
     // });
+    
+    // Testimonial slider
+    let currentTestimonial = 0;
+    const testimonials = document.querySelectorAll('.testimonial-item');
+    
+    function showNextTestimonial() {
+      testimonials[currentTestimonial].classList.remove('active');
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+      testimonials[currentTestimonial].classList.add('active');
+    }
+    
+    // Change testimonial every 5 seconds
+    setInterval(showNextTestimonial, 5000);
+    
+    // Simple countdown timer
+    let minutes = 19;
+    let seconds = 52;
+    const minutesTens = document.querySelector('.countdown-item:nth-child(1)');
+    const minutesOnes = document.querySelector('.countdown-item:nth-child(2)');
+    const secondsTens = document.querySelector('.countdown-item:nth-child(4)');
+    const secondsOnes = document.querySelector('.countdown-item:nth-child(5)');
+    
+    function updateCountdown() {
+      seconds--;
+      if (seconds < 0) {
+        seconds = 59;
+        minutes--;
+        if (minutes < 0) {
+          minutes = 59;
+        }
+      }
+      
+      minutesTens.textContent = Math.floor(minutes / 10);
+      minutesOnes.textContent = minutes % 10;
+      secondsTens.textContent = Math.floor(seconds / 10);
+      secondsOnes.textContent = seconds % 10;
+    }
+    
+    // Update countdown every second
+    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
