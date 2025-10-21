@@ -11,7 +11,7 @@
     "exclude": ["/images/*", "/css/*", "/js/*", "/*.ico", "/*.png"]
   },
   "platform": {
-    "apiRuntime": "node:16"
+    "apiRuntime": "node:18"
   },
   "responseOverrides": {
     "404": {
