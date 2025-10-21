@@ -814,6 +814,12 @@
         </div>
         
         <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" class="form-control" placeholder="Where to send your charm" required>
+          <i class="fas fa-envelope form-icon"></i>
+        </div>
+        
+        <div class="form-group">
           <label for="goal">What Do You Need Luck With?</label>
           <select id="goal" class="form-control" required>
             <option value="" disabled selected>Select your desire</option>
@@ -878,20 +884,228 @@
   </div>
   
   <script>
-    // Preview functionality
-    const form = document.getElementById('charmForm');
-    const preview = document.getElementById('preview');
+    // Initialize Stripe
+    const stripe = Stripe('pk_test_your_publishable_key'); // Replace with your actual publishable key
     
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      // This would be replaced with actual Stripe payment processing
-      
-      // Show the preview with animation
-      preview.style.display = 'block';
-      
-      // Scroll to preview
-      preview.scrollIntoView({ behavior: 'smooth' });
+    // Set up payment request for Apple Pay
+    const paymentRequest = stripe.paymentRequest({
+      country: 'US',
+      currency: 'usd',
+      total: {
+        label: 'Personalized Luck Charm',
+        amount: 100, // $1.00 in cents
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
     });
+    
+    // Check if Apple Pay is available
+    const elements = stripe.elements();
+    const prButton = elements.create('paymentRequestButton', {
+      paymentRequest,
+      style: {
+        paymentRequestButton: {
+          theme: 'dark',
+          height: '44px',
+        },
+      }
+    });
+    
+    // Mount Apple Pay button if available
+    paymentRequest.canMakePayment().then(function(result) {
+      if (result && result.applePay) {
+        prButton.mount('#stripe-container');
+      } else {
+        document.getElementById('stripe-container').innerHTML = 
+          '<p style="color: var(--text-light); font-size: 0.8rem; text-align: center; margin: 10px 0;">Apple Pay not available on this device. Please try on a compatible device.</p>';
+      }
+    });
+    
+    // Stripe checkout success handler
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      // Validate form
+      if (!form.checkValidity()) {
+        alert('Please fill out all required fields');
+        return;
+      }
+      
+      const submitButton = this.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.innerHTML;
+      
+      try {
+        // Disable button and show loading state
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        
+        // Get form data
+        const name = document.getElementById('name').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const email = document.getElementById('email').value;
+        const goal = document.getElementById('goal').value;
+        
+        // Call Azure function to create checkout session
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            birthdate,
+            email,
+            goal,
+            amount: 100, // $1.00 in cents
+            payment_type: 'regular'
+          }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error creating checkout session');
+        }
+        
+        const data = await response.json();
+        
+        // Redirect to Stripe Checkout
+        const result = await stripe.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+        
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+        
+      } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error processing your payment: ' + error.message);
+        
+        // Re-enable button
+        submitButton.disabled = false;
+        submitButton.innerHTML = originalButtonText;
+      }
+    });
+    
+    // Document ready event - check URL for session_id (from Stripe redirect)
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Check for session_id in URL (Stripe callback)
+      const urlParams = new URLSearchParams(window.location.search);
+      const sessionId = urlParams.get('session_id');
+      const success = urlParams.get('success');
+      
+      if (sessionId && success === 'true') {
+        try {
+          // Call Azure function to generate charm after redirect from successful payment
+          await generateCharm(sessionId);
+        } catch (error) {
+          console.error('Error:', error);
+          alert('There was an error generating your charm. Please contact support.');
+        }
+      }
+    });
+    
+    // Handle payment request confirmation (Apple Pay)
+    paymentRequest.on('paymentmethod', async function(ev) {
+      const name = document.getElementById('name').value;
+      const birthdate = document.getElementById('birthdate').value;
+      const email = document.getElementById('email').value;
+      const goal = document.getElementById('goal').value;
+      
+      try {
+        // Call Azure function to create checkout session with payment method
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            birthdate,
+            email,
+            goal,
+            amount: 100, // $1.00 in cents
+            payment_method_id: ev.paymentMethod.id,
+            payment_type: 'apple_pay'
+          }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error creating checkout session');
+        }
+        
+        const data = await response.json();
+        
+        // Complete the Apple Pay payment
+        ev.complete('success');
+        
+        // Generate charm after successful payment
+        await generateCharm(data.paymentId || data.sessionId);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        ev.complete('fail');
+        alert('There was an error processing your payment. Please try again.');
+      }
+    });
+    
+    // Function to generate charm after successful payment
+    async function generateCharm(paymentId) {
+      try {
+        // Call Azure function to generate charm
+        const response = await fetch('/api/generateCharm', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            paymentId, // Could be sessionId or paymentIntentId depending on payment flow
+          }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Error generating charm');
+        }
+        
+        const data = await response.json();
+        
+        // Update URL without reload to remove query params
+        window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Show the preview with animation
+        preview.style.display = 'block';
+        
+        // Scroll to preview
+        preview.scrollIntoView({ behavior: 'smooth' });
+        
+        // Clear form inputs for a clean state
+        form.reset();
+        
+        // Update the preview with actual charm data
+        if (data.charmSymbol) {
+          document.querySelector('.charm-preview i').className = data.charmSymbol;
+        }
+        
+        // If we have a custom message, update the preview text
+        if (data.message) {
+          const previewText = document.querySelector('#preview p');
+          if (previewText) {
+            previewText.textContent = data.message;
+          }
+        }
+        
+        // Add tracking pixel for conversion tracking if needed
+        if (data.conversionUrl) {
+          const img = new Image();
+          img.src = data.conversionUrl;
+          img.style.display = 'none';
+          document.body.appendChild(img);
+        }
+        
+      } catch (error) {
+        console.error('Error generating charm:', error);
+        alert('Payment successful! However, there was an error generating your charm. Our team has been notified and will email your charm shortly.');
+      }
+    }
     
     // Form field animations
     const formControls = document.querySelectorAll('.form-control');
@@ -905,35 +1119,6 @@
         this.parentElement.querySelector('label').style.color = '';
       });
     });
-    
-    // Stripe implementation specifically for Apple Pay
-    // const stripe = Stripe('your-publishable-key');
-    // const paymentRequest = stripe.paymentRequest({
-    //   country: 'US',
-    //   currency: 'usd',
-    //   total: {
-    //     label: 'Personalized Luck Charm',
-    //     amount: 100, // Amount in cents
-    //   },
-    //   requestPayerName: true,
-    //   requestPayerEmail: true,
-    // });
-    
-    // // Check if Apple Pay is available
-    // const elements = stripe.elements();
-    // const prButton = elements.create('paymentRequestButton', {
-    //   paymentRequest,
-    // });
-    
-    // // Mount Apple Pay button if available
-    // paymentRequest.canMakePayment().then(function(result) {
-    //   if (result && result.applePay) {
-    //     prButton.mount('#stripe-container');
-    //   } else {
-    //     document.getElementById('stripe-container').innerHTML = 
-    //       '<p style="color: var(--text-light); font-size: 0.8rem; text-align: center; margin: 10px 0;">Apple Pay not available on this device. Please try on a compatible device.</p>';
-    //   }
-    // });
     
     // Testimonial slider
     let currentTestimonial = 0;
