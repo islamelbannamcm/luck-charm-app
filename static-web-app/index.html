@@ -920,7 +920,8 @@
           '<p style="color: var(--text-light); font-size: 0.8rem; text-align: center; margin: 10px 0;">Apple Pay not available on this device. Please try on a compatible device.</p>';
       }
     });
-    
+    // Get the form element
+    const form = document.getElementById('charmForm');
     // Stripe checkout success handler
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
