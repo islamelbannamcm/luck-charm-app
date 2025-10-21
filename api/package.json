@@ -10,13 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@azure/data-tables": "^13.3.1",
-    "@azure/functions": "^4.8.0",
-    "@azure/openai": "^2.0.0",
-    "@azure/storage-blob": "^12.29.1",
-    "node-fetch": "^3.3.2",
-    "openai": "^6.6.0",
-    "sharp": "^0.34.4",
-    "stripe": "^19.1.0"
+    "@azure/data-tables": "^13.2.1",
+    "@azure/functions": "^3.5.1",
+    "@azure/openai": "^1.0.0",
+    "@azure/storage-blob": "^12.14.0",
+    "node-fetch": "^2.6.9",
+    "openai": "^4.20.1",
+    "sharp": "^0.32.6",
+    "stripe": "^12.18.0"
   }
 }
