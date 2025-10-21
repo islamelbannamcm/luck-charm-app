@@ -1,0 +1,9 @@
+{
+  "name": "luck-charm-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Luck Charm application",
+  "main": "index.html",
+  "scripts": {
+    "start": "echo 'Static HTML site'"
+  }
+}

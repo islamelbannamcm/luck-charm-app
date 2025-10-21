@@ -2,12 +2,21 @@
   "routes": [
     {
       "route": "/api/*",
-      "methods": ["GET", "POST"],
+      "methods": ["GET", "POST", "PUT"],
       "allowedRoles": ["anonymous"]
     }
   ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": ["/images/*", "/css/*", "/js/*", "/*.ico", "/*.png"]
+  },
+  "platform": {
+    "apiRuntime": "node:18"
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
   }
 }
