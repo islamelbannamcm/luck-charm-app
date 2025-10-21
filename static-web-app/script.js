@@ -1,5 +1,3 @@
-const stripe = Stripe('pk_live_51SKMcz4WZnjSGoTDWg7zWjDtkbnL9sjTZ9DAvMREoxtEcZx3YA2eLGgQ141OZX36r3svVPGXAPLqTxPV3V6dfrOo00OEXaQe2i'); // Replace with your Stripe test key from dashboard
-
 document.getElementById('charmForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('name').value;
