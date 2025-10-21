@@ -1,4 +1,4 @@
-const stripe = require('stripe')('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'); // Replace with your actual secret key
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async function (context, req) {
   try {
